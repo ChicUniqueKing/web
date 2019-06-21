@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html,body{
+			width:100%;
+			height:100%;
+		}
+		.content{
+			width:100%;
+			height:500px;
+			
+		}
+		
+		canvas{
+			
+			background: #fff;
+			display: block;
+		}
+	</style>
+	<body>
+		<div class="warp">
+			<div class="content"></div>
+			<div class="content"></div>
+			<div class="content"></div>
+		</div>
+		<canvas id="canvas"></canvas>
+		<script>
+			var time =20;
+			var can = document.getElementById("canvas");
+			var cxt = can.getContext("2d");
+			var w = can.width = window.innerWidth;
+			var h = can.height= window.innerHeight;
+			var maxH = 0.85*h;
+			window.onresize = function(){
+				w = can.width = window.innerWidth;
+				h = can.height= window.innerHeight;
+				maxH = h*0.85*h;
+			}
+		/*	//设置画笔的颜色；
+			cxt.fillStyle="red";
+			cxt.fillRect(0,0,100,100)
+			//设置圆形的路径
+			cxt.arc(250,250,60,0,Math.PI*2,false);
+			cxt.fill();
+			*/
+			
+			var colora = new Array();
+			colora[0]=198;
+			colora[1]=165;
+			colora[2]=50;
+			colora[3]=188;
+			colora[4]=198;
+			
+			//={198,165,50,188,198};
+			var colorb = new Array();
+			colorb[0]=127;
+			colorb[1]=198;
+			colorb[2]=189;
+			colorb[3]=50;
+			colorb[4]=50;
+			var colorc = new Array();
+			colorc[0]=50;
+			colorc[1]=50;
+			colorc[2]=198;
+			colorc[3]=198;
+			colorc[4]=114;
+		
+		
+		/*var colorIndex =Math.random()*40+"";
+		setInterval(function(){
+			var colorIndex =Math.random()*40+"";
+			console.log(colorIndex.substr(0,1))
+		},1000);*/
+		
+		
+		var drs = 20;
+		
+			//对象数组
+			var drops = new Array;
+			
+			var x,y,vy,a,vr,va,index,colorIndex;
+			//创建雨滴对象
+			function Drop(){
+				
+			}
+			Drop.prototype={
+				init:function(){
+					//设置坐标
+					this.x =random(6,w);
+					this.y = 0;
+					//y 方向的速度值
+					this.vy = random(4,5);
+					this.colorIndex =(Math.random()*40+"").substr(0,1);
+					this.r =1;
+					this.vr =1;
+					this.a =1;
+					this.va =0.96;
+				},
+				draw:function(){//绘制图形
+					if(this.y>maxH){
+						cxt.beginPath();
+						cxt.arc(this.x,this.y,this.r,0,Math.PI*2,false);
+						cxt.strokeStyle="rgba("+colora[this.colorIndex]+","+colorb[this.colorIndex]+","+colorc[this.colorIndex]+","+this.a+")";
+						cxt.stroke();
+					}else{
+						//this.init();
+						if(colorIndex>4){
+							cxt.fillStyle="rgb(0,255,255)";
+						}else{
+							cxt.fillStyle="rgb("+colora[this.colorIndex]+","+colorb[this.colorIndex]+","+colorc[this.colorIndex]+")";
+						}
+					//cxt.fill();
+					cxt.fillRect(this.x,this.y,3,6);
+					//this.y+=this.vy;
+					}
+					this.update();
+				
+				},
+				update:function(){
+					if(this.y<maxH){
+						this.y +=this.vy;
+					}else{
+						if(this.a>0.03){
+								this.r+=this.vr;
+								if(this.r>40){
+									this.a-=0.03;
+								}
+							}else{
+						//雨滴消失 创建新的雨滴对象
+								this.init();
+								this.draw();
+							}
+						}
+					}
+				}
+				/*move:function(){
+					cxt.fillStyle ="rgba(0.0.0,0.1)";
+					//cxt.fillRect(0,0,w,h);
+					cxt.fillRect(this.x,this.y,4,40);
+					this.y+=this.vy;
+				}*/
+			
+			
+			//新建对象
+			
+			/*var drop = new Drop();
+			drop.init();drop.draw();
+			*/
+			
+			for(var i =0 ;i<drs;i++){
+				setTimeout(function(){
+					var drop =new Drop();
+					drop.init();
+				drop.draw();
+				drops.push(drop);
+				},i*300);
+				
+				
+			}
+			
+			//生成随机数的方法
+			function random(min,max){
+				return Math.random()*(max-min)+min;
+			}
+			
+			
+			function move(){
+				cxt.fillStyle ="rgba(0,0,0,0.1)";
+				cxt.fillRect(0,0,w,h);
+				y+=vy;
+				for(var i =0;i<drops.length;i++){
+					var dr = drops[i];
+					index = i;
+					dr.draw();
+					/*if(dr.y>600){
+					drops.splice(i,1);
+					}*/
+					//设置圆形的路径
+					/*cxt.arc(250,250,60,0,Math.PI*2,true);
+					cxt.fill();*/
+				}
+				requestAnimationFrame(move);
+			}
+			
+			/*setInterval(function(){
+				if(drops.length<drs){
+					var drop =new Drop();
+				drop.init();
+				drop.draw();
+				drops.push(drop);
+				}
+				
+			},1000/60);*/
+			move();
+			
+			/*$(function(){
+				
+			});
+			*/
+		</script>
+	</body>
+</html>
