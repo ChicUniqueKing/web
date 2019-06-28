@@ -1,14 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
 	<head>
-		<meta charset="UTF-8">
-		<title>3d动gan线条</title>
+		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="css/mui.min.css" rel="stylesheet" />
+		<title>第三方用户登录</title>
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	</head>
+		<script src="layer/2.4/layer.js"></script>
 		<style type="text/css">
+		
+			*{
+				margin: 0;
+				padding:0;
+			}
 			html{
 				width:100%;
 				height:100%;
@@ -17,23 +20,150 @@
 			body{
 				width:100%;
 				height:100%;
-				margin :0;
-				padding: 0;
-				background: black;
+				position: relative;
+				background-color: rgba(29, 27, 27, 0.8);
 				 overflow: hidden;
+				 color:#fff;
 			}
-		
+			.log_con{
+				width:400px;
+				height:400px;
+			}
+			.input-text{
+				width:300px;
+				height:30px;
+				line-height: 30px;
+				border:1px solid #ddd;
+				border-radius:5px;
+				font-size: 14px;
+				color:#fff;
+				padding-left: 20px;
+				margin-left:30px;
+				background: none;
+				
+				
+			}
+			
+			p{
+				margin-top:30px;
+			}
+			/*.input-text:hover{
+				border:1px solid #4527db;
+			}*/
+			#loginbtn{
+				width:80px;
+				height:30px;
+				background: #D5E6C4;
+				border-radius:5px;
+				
+			}
+			.lg{
+				width:400px;
+				height:300px;
+				position: relative;
+				margin:0 auto;
+				overflow: hidden;
+				border-radius:12px;
+				/*border:1px solid #ccc;*/
+				
+			}
+			.lg_t{
+				width:100%;
+				height:30px;
+				margin-top:10px;
+			}
+			.lg_c{
+				width:868px;
+				height:280px;
+				opacity: 1;
+				position: absolute;
+				
+			}
+			.log_con{
+				display: inline-block;
+			}
+			
+			.lg_t_l{
+				display: inline-block;
+				width:126px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				margin:0 30px;
+				cursor:pointer;
+				
+			}
+			.active{
+				border-bottom: 3px solid #ccc;
+			}
+			.login_float{
+				width:400px;
+				height:300px;
+				position: absolute;
+				border-radius:12px;
+				left:50%;
+				top:30%;
+				z-index: 999;
+				background-color: rgba(83, 83, 83, 0.8);
+			}
+			
 		</style>
+	</head>
 	<body>
-		
 		<canvas id="myCanvas"></canvas>
+		<div class="login_float">
+		<div class="lg">
+			<div class="lg_t">
+				<div class="lg_t_l active">密码登录</div>
+				<div class="lg_t_l">验证码登录</div>
+			</div>
+			<div class="lg_c">
+			<div class ="log_con">
+			<p><label></label><input class="input-text" type="text" placeholder="输入手机号"/></p>
+			<p><label></label><input class="input-text" type="text" placeholder="输入密码"/></p>
+			<p><a  href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="/qqlogin">qq登录</a><input id="loginbtn" type="button" value="登录"/></p>
+		</div>
+		<div class ="log_con">
+			<p><label></label><input class="input-text" type="text" placeholder="输入手机号"/></p>
+			<p><label></label><input class="input-text" type="text" placeholder="输入验证码"/></p>
+			<p><label></label><input class="input-text" style="width:120px" type="text" placeholder="输入短信验证码"/><a href="sendMsg">发送验证码</a></p>
+			<p style="margin-left:30px;"><a href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="/qqlogin">qq登录</a><input id="loginbtn" type="button" value="登录"/></p>
+		</div>
+		</div>
+		</div>
+		</div>
 		
 		
+		<div class="bottom"></div>
+		
+		<script type="text/javascript">
+		
+		$(function(){
+			
+			/*$(".login_float").style.left=$("body").width()*0.5-($(".login_float").width()/2);
+			$(".login_float").style.top=$("body").height()*0.5-($(".login_float").heigth()/2);*/
+			$(".lg_t_l").each(function(){
+				$(this).click(function(){
+					$(this).addClass("active").siblings().removeClass("active");
+					console.log("--------------");
+					var index = $(this).index();
+					console.log(index);
+					var width = $(".lg").width();
+					$(".lg_c").animate({"left":-index*width},"slow",function(){
+						
+						console.log("----------------运行结束");
+					});
+					
+				});
+			});
+		});
+		
+		
+		</script>
 		<script type="text/javascript">
 		
 		
 		//小球对象
-		
 			var cyclePoint = function(x,y,r,s,t){
 				this.x =x;//初始位置  ---横坐标
 				this.y=y;//初始化 纵坐标
@@ -41,6 +171,17 @@
 				this.s=s;
 				this.t=t;
 			}
+			/**
+			 *  封装参数对象
+			 * @param {Object} s
+			 * @param {Object} flag
+			 */
+			var parameter = function(s,flag){
+				this.s=s;
+				this.flag =flag;
+			}
+			
+			
 			var canvas = $("#myCanvas")[0];
 			var width =canvas.width=$("body").width();
 			var height=canvas.height=$("body").height();
@@ -69,7 +210,7 @@
 				},
 				//小球的运动
 				render:function(a){
-					ctx.clearRect(0,0,1538,735);
+					ctx.clearRect(0,0,width,height);
 					for(var i= 0;i<a.length;i++){
 						//获取小球的位置
 						var c = a[i].x;
@@ -103,7 +244,7 @@
 							var width = Math.abs(x-y);
 							var height =Math.abs(o-p);
 							var sprt = Math.sqrt(width*width+height*height);
-							if(sprt<100){
+							if(sprt<150){
 								ctx.beginPath();
 								ctx.strokeStyle="#fff";
 								ctx.moveTo(x,o);
@@ -113,22 +254,47 @@
 						}
 					}
 				},
-				run: function(s){
+				
+				run: function(parameter){//参数说明
 					RENDERER.init(); 
-			setInterval(function(){
+			var timer = setInterval(function(){
 				RENDERER.render(cycleList);
 				
-			},s);
+			},parameter.s);
+			if(parameter.flag){
+			$(function(){
+				$("body").mouseover(function(){
+				clearInterval(timer);
+			}).mouseleave(function(){
+				timer = setInterval(function(){
+				RENDERER.render(cycleList);
+				
+			},10);
+				
+			});
+			})
+			}
 				}
 			};
 			
 			//执行run方法
-			RENDERER.run(10);
+			RENDERER.run({
+				"s":"10",
+				"flag":false
+				});
 			
-			
+			/**
+			 * 监控窗口的变化
+			 */
+			/*$("body").onresize(function(){
+				width =canvas.width=$("body").width();
+				height=canvas.height=$("body").height();
+			});*/
 			
 			
 		</script>
+		
+		
+		
 	</body>
-
 </html>
