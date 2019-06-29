@@ -277,6 +277,7 @@
 							var sprt = Math.sqrt(width*width+height*height);
 							if(sprt<100){
 								ctx.beginPath();
+								ctx.lineWidth=0.3;
 								ctx.strokeStyle="#fff";
 								ctx.moveTo(x,o);
 								ctx.lineTo(y,p);
@@ -359,7 +360,8 @@
 				});
 				
 				});
-	
+			window.onresize = function(){
+				document.getElementById("info_jb51_net").innerHTML="宽度："+document.documentElement.clientWidth+"，高度："+document.documentElement.clientHeight;
 			
 			
 		</script>
