@@ -50,11 +50,14 @@
 			/*.input-text:hover{
 				border:1px solid #4527db;
 			}*/
-			#loginbtn{
-				width:80px;
+			.btn{
+				width:132px;
 				height:30px;
-				background: #D5E6C4;
-				border-radius:5px;
+				margin-left: 50px;
+				background: #683b0b;
+				border:1px solid #683b0b;
+				border-radius:6px;
+				color:#fff;
 				
 			}
 			.lg{
@@ -70,7 +73,8 @@
 			.lg_t{
 				width:100%;
 				height:30px;
-				margin-top:10px;
+				padding-top:10px;
+				background: #683b0b;
 			}
 			.lg_c{
 				width:868px;
@@ -106,6 +110,31 @@
 				z-index: 999;
 				background-color: rgba(83, 83, 83, 0.8);
 			}
+			.bm{
+			width:475px;
+			height:60px;
+			position: absolute;
+			font-size: 12px;
+			margin: 0 auto;
+			bottom: 10px;
+			color:#fff;
+    		left: 545px;
+
+		}
+		}
+		.bm a{
+			width: :200px;
+			height:40px;
+			margin: 10px auto;
+			display: inline-block;
+			color: #fff;
+			font-size: 16px;
+		}
+		a{
+			color:#fff;
+			font-size: 12px;
+			text-decoration: none;
+		}
 			
 		</style>
 	</head>
@@ -119,22 +148,24 @@
 			</div>
 			<div class="lg_c">
 			<div class ="log_con">
-			<p><label></label><input class="input-text" type="text" placeholder="输入手机号"/></p>
-			<p><label></label><input class="input-text" type="text" placeholder="输入密码"/></p>
-			<p><a  href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="/qqlogin">qq登录</a><input id="loginbtn" type="button" value="登录"/></p>
+			<p><label></label><input class="input-text" id ="username" type="text" placeholder="输入用户名"/></p>
+			<p><label></label><input class="input-text" id ="password" type="password" placeholder="输入密码"/></p>
+			<p style="margin-left:30px;"><a  href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="/qqlogin">qq登录</a><input class="btn" id="loginbtn" type="button" value="登录"/></p>
 		</div>
 		<div class ="log_con">
 			<p><label></label><input class="input-text" type="text" placeholder="输入手机号"/></p>
 			<p><label></label><input class="input-text" type="text" placeholder="输入验证码"/></p>
 			<p><label></label><input class="input-text" style="width:120px" type="text" placeholder="输入短信验证码"/><a href="sendMsg">发送验证码</a></p>
-			<p style="margin-left:30px;"><a href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="/qqlogin">qq登录</a><input id="loginbtn" type="button" value="登录"/></p>
+			<p style="margin-left:30px;"><a href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="/qqlogin">qq登录</a><input class="btn" type="button" value="登录"/></p>
 		</div>
 		</div>
 		</div>
 		</div>
 		
 		
-		<div class="bottom"></div>
+		<div class="bm">
+			<a class ="icp" href="http://www.beian.miit.gov.cn">鄂ICP备18011644号</a> | Design by chicboy -2019 仅用于个人网站 开发测试 学习使用 
+		</div>
 		
 		<script type="text/javascript">
 		
@@ -191,7 +222,7 @@
 			var RENDERER = {
 				//初始化 小球
 				init:function(){
-					for(var i= 0;i<30;i++){
+					for(var i= 0;i<50;i++){
 						var x = (width-6)*Math.random();
 						var y = (height-6)*Math.random();
 						var r = 3*Math.random()+3;
@@ -244,7 +275,7 @@
 							var width = Math.abs(x-y);
 							var height =Math.abs(o-p);
 							var sprt = Math.sqrt(width*width+height*height);
-							if(sprt<150){
+							if(sprt<100){
 								ctx.beginPath();
 								ctx.strokeStyle="#fff";
 								ctx.moveTo(x,o);
@@ -290,6 +321,45 @@
 				width =canvas.width=$("body").width();
 				height=canvas.height=$("body").height();
 			});*/
+			
+			
+		</script>
+		<script type="text/javascript">
+			$(function(){
+				$("#loginbtn").click(function(){
+					var username = $("#username").val();
+					var password = $("#password").val();
+					console.log("----------------");
+					var params ={
+							"username":username,
+							"password":password
+						};
+						var param = JSON.stringify(params);
+					$.ajax({
+						url:"http://127.0.0.1:8888/login",
+						type:"post",
+						dataType:"json",
+						data:param,
+						contentType: "application/json;charset-UTF-8",
+						success:function(rs){
+							var msg = rs.resMsg;
+							if(rs.resCode==1){
+								var index = layer.msg(msg);
+							}else{
+								var index = layer.msg("账号或者密码错误");
+							}
+							setTimeout(function(){
+								window.location.href="index.html"
+							},1000);
+       				
+						}
+						
+					});
+					
+				});
+				
+				});
+	
 			
 			
 		</script>
