@@ -225,7 +225,7 @@
 					for(var i= 0;i<50;i++){
 						var x = (width-6)*Math.random();
 						var y = (height-6)*Math.random();
-						var r = 3*Math.random()+3;
+						var r = 2*Math.random()+3;
 						var random1 = Math.random();
 						var random2 = Math.random();
 						var s = random1>0.5 ? 1 : -1;
@@ -275,7 +275,7 @@
 							var width = Math.abs(x-y);
 							var height =Math.abs(o-p);
 							var sprt = Math.sqrt(width*width+height*height);
-							if(sprt<100){
+							if(sprt<80){
 								ctx.beginPath();
 								ctx.lineWidth=0.3;
 								ctx.strokeStyle="#fff";
