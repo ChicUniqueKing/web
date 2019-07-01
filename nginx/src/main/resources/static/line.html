@@ -21,7 +21,7 @@
 				width:100%;
 				height:100%;
 				position: relative;
-				background-color: rgba(29, 27, 27, 0.8);
+				background-color: #000;
 				 overflow: hidden;
 				 color:#fff;
 			}
@@ -37,9 +37,9 @@
 				border-radius:5px;
 				font-size: 14px;
 				color:#fff;
+				background: #6b451e;
 				padding-left: 20px;
 				margin-left:30px;
-				background: none;
 				
 				
 			}
@@ -67,6 +67,7 @@
 				margin:0 auto;
 				overflow: hidden;
 				border-radius:12px;
+				background: rgba(234, 234, 234, 0.21);
 				/*border:1px solid #ccc;*/
 				
 			}
@@ -106,20 +107,24 @@
 				position: absolute;
 				border-radius:12px;
 				left:50%;
-				top:50%;
-				transform:translate(-50%,-50%);
+				top:30%;
 				z-index: 999;
 				background-color: rgba(83, 83, 83, 0.8);
 			}
+			.tt{
+				transform: translate(-50%,-50%);
+			}
 			.bm{
-			width:475px;
+			margin-left:20px;
+			width:400px;
 			height:60px;
 			position: absolute;
 			font-size: 12px;
 			margin: 0 auto;
 			bottom: 10px;
 			color:#fff;
-    		left: 545px;
+    		left: 50%;
+    		transform: translate(-50%);
 
 		}
 		}
@@ -135,6 +140,11 @@
 			color:#fff;
 			font-size: 12px;
 			text-decoration: none;
+		}
+		.bm_div{
+			width:315px;
+			height:20px;
+			margin: 0 auto;
 		}
 			
 		</style>
@@ -165,7 +175,8 @@
 		
 		
 		<div class="bm">
-			<a class ="icp" href="http://www.beian.miit.gov.cn">鄂ICP备18011644号</a> | Design by chicboy -2019 仅用于个人网站 开发测试 学习使用 
+			<div class="bm_div"><a class ="icp" href="http://www.beian.miit.gov.cn">鄂ICP备18011644号</a></div>
+			<div class="bm_div">Copyright © 2018-2019 chic. All Rights Reserved.</div>
 		</div>
 		
 		<script type="text/javascript">
@@ -222,18 +233,18 @@
 			//构建圆点对象
 			var RENDERER = {
 				//初始化 小球
-				init:function(){
-					for(var i= 0;i<50;i++){
+				init:function(b){
+					for(var i= 0;i<30;i++){
 						var x = (width-6)*Math.random();
 						var y = (height-6)*Math.random();
-						var r = 2*Math.random()+3;
+						var r = 3*Math.random()+3;
 						var random1 = Math.random();
 						var random2 = Math.random();
 						var s = random1>0.5 ? 1 : -1;
 						var t = random2>0.5 ? 1 : -1;
 						cycleList.push(new cyclePoint(x,y,r,s,t));
 						ctx.beginPath();
-						ctx.fillStyle="#fff";
+						ctx.fillStyle=b;
 						ctx.arc(x,y,r,0,2*Math.PI,true);
 						ctx.stroke();
 						ctx.fill();
@@ -241,7 +252,7 @@
 					this.link(cycleList);
 				},
 				//小球的运动
-				render:function(a){
+				render:function(a,b){
 					ctx.clearRect(0,0,width,height);
 					for(var i= 0;i<a.length;i++){
 						//获取小球的位置
@@ -257,15 +268,15 @@
 						a[i].x+=a[i].s;
 						a[i].y+=a[i].t;
 						ctx.beginPath();
-						ctx.fillStyle="#fff";
+						ctx.fillStyle=b;
 						ctx.arc(a[i].x,a[i].y,a[i].r,0,2*Math.PI,true);
 						ctx.stroke();
 						ctx.fill();
 					}
-					this.link(cycleList);
+					this.link(cycleList,b);
 				},
 				//判断两个对球体对象的距离 如果距离接近就连接
-				link:function(a){
+				link:function(a,b){
 					for(var i =0;i<a.length-1;i++){
 						for(var j =i+1;j<a.length;j++){
 							//计算两个球的距离
@@ -276,10 +287,9 @@
 							var width = Math.abs(x-y);
 							var height =Math.abs(o-p);
 							var sprt = Math.sqrt(width*width+height*height);
-							if(sprt<120){
+							if(sprt<180){
 								ctx.beginPath();
-								ctx.lineWidth=0.3;
-								ctx.strokeStyle="#fff";
+								ctx.strokeStyle=b;
 								ctx.moveTo(x,o);
 								ctx.lineTo(y,p);
 								ctx.stroke();
@@ -289,9 +299,9 @@
 				},
 				
 				run: function(parameter){//参数说明
-					RENDERER.init(); 
+					RENDERER.init("#666666"); 
 			var timer = setInterval(function(){
-				RENDERER.render(cycleList);
+				RENDERER.render(cycleList,"#8d8d8d");
 				
 			},parameter.s);
 			if(parameter.flag){
@@ -327,11 +337,24 @@
 			
 		</script>
 		<script type="text/javascript">
+		
+	/**
+	 *  页面设备监控
+	 * 
+	 */
+			width =canvas.width=$("body").width();
+				height=canvas.height=$("body").height();
+		var loginw = $(".login_float").width();
+		if(width<2*loginw){
+			console.log("-----------------------");
+			$(".login_float").addClass("tt");
+		}else{
+			$(".login_float").removeClass("tt");
+		}
 			$(function(){
 				$("#loginbtn").click(function(){
 					var username = $("#username").val();
 					var password = $("#password").val();
-					console.log("----------------");
 					var params ={
 							"username":username,
 							"password":password
@@ -348,12 +371,11 @@
 							if(rs.resCode==1){
 								var index = layer.msg(msg);
 								setTimeout(function(){
-									window.location.href="index.html"
-								},1000);
+								window.location.href="index.html"
+							},1000);
 							}else{
 								var index = layer.msg("账号或者密码错误");
 							}
-       				
 						}
 						
 					});
@@ -361,6 +383,17 @@
 				});
 				
 				});
+			//window 窗口监听事件
+			window.onresize = function(){
+				width =canvas.width=$("body").width();
+		var loginw = $(".login_float").width();
+		if(width<2*loginw){
+			console.log("-----------------------");
+			$(".login_float").addClass("tt");
+		}else{
+			$(".login_float").removeClass("tt");
+		}
+			}
 		</script>
 		
 		
