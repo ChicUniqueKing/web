@@ -167,7 +167,7 @@
 			<p><label></label><input class="input-text" type="text" placeholder="输入手机号"/></p>
 			<p><label></label><input class="input-text" type="text" placeholder="输入验证码"/></p>
 			<p><label></label><input class="input-text" style="width:120px" type="text" placeholder="输入短信验证码"/><a href="sendMsg">发送验证码</a></p>
-			<p style="margin-left:30px;"><a href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="/qqlogin">qq登录</a><input class="btn" type="button" value="登录"/></p>
+			<p style="margin-left:30px;"><a href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="javascript:;" id="qqlg">qq登录</a><input class="btn" type="button" value="登录"/></p>
 		</div>
 		</div>
 		</div>
@@ -188,20 +188,16 @@
 			$(".lg_t_l").each(function(){
 				$(this).click(function(){
 					$(this).addClass("active").siblings().removeClass("active");
-					console.log("--------------");
 					var index = $(this).index();
 					console.log(index);
 					var width = $(".lg").width();
 					$(".lg_c").animate({"left":-index*width},"slow",function(){
 						
-						console.log("----------------运行结束");
 					});
 					
 				});
 			});
 		});
-		
-		
 		</script>
 		<script type="text/javascript">
 		
@@ -398,6 +394,9 @@
 		}
 			}
 			
+			$("#qqlg").click(function(){
+				window.location.href="http://118.24.27.89:9999//oauth/authorize?client_id=123456&response_type=code&scope=read&redirect_uri=http://blog.yistar.top";
+			});
 			
 			
 		</script>
