@@ -5,8 +5,14 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>博客用户登录</title>
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="activeline.1.0.js" type="text/javascript"></script>
 		<script src="layer.js"></script>
 		<style type="text/css">
+
+		a{
+			font-size: 12px;
+			color:#000;
+		}
 		
 			*{
 				margin: 0;
@@ -21,9 +27,10 @@
 				width:100%;
 				height:100%;
 				position: relative;
-				background-color: #000;
+				background-color: #151529;
 				 overflow: hidden;
-				 color:#fff;
+				 color:#000;
+				 font-size: 12px;
 			}
 			.log_con{
 				width:400px;
@@ -33,11 +40,11 @@
 				width:300px;
 				height:30px;
 				line-height: 30px;
-				border:1px solid #ddd;
-				border-radius:5px;
+				border:1px solid #ccc;
+				border-radius:3px;
 				font-size: 14px;
-				color:#fff;
-				background: #6b451e;
+				color:#000;
+				background: #fff;
 				padding-left: 20px;
 				margin-left:30px;
 				
@@ -54,11 +61,14 @@
 				width:132px;
 				height:30px;
 				margin-left: 50px;
-				background: #683b0b;
-				border:1px solid #683b0b;
-				border-radius:6px;
+				background: #191715;;
+				border:1px solid #191715;;
+				border-radius:3px;
 				color:#fff;
-				
+				cursor:pointer;
+			}
+			.btn:hover{
+				opacity: 0.7;
 			}
 			.lg{
 				width:400px;
@@ -66,8 +76,8 @@
 				position: relative;
 				margin:0 auto;
 				overflow: hidden;
-				border-radius:12px;
-				background: rgba(234, 234, 234, 0.21);
+				border-radius:4px;
+				background: rgba(220, 219, 219, 0.3);
 				/*border:1px solid #ccc;*/
 				
 			}
@@ -75,7 +85,7 @@
 				width:100%;
 				height:30px;
 				padding-top:10px;
-				background: #683b0b;
+				background: #fff;
 			}
 			.lg_c{
 				width:868px;
@@ -96,20 +106,27 @@
 				text-align: center;
 				margin:0 30px;
 				cursor:pointer;
+				font-size: 16px;
 				
 			}
+			.input-text:hover{
+				border:1px solid #cd9c7b;
+				box-shadow: 0px 0px 14px #cd9c7b;
+			}
 			.active{
-				border-bottom: 3px solid #ccc;
+				border-bottom: 4px solid #171414;
 			}
 			.login_float{
 				width:400px;
 				height:300px;
 				position: absolute;
-				border-radius:12px;
+				border-radius:4px;
 				left:50%;
 				top:30%;
 				z-index: 999;
-				background-color: rgba(83, 83, 83, 0.8);
+				transform: translate(180px, 0);
+				background-color: #fff;
+				box-shadow: 0px 0px 3px #fff;
 			}
 			.tt{
 				transform: translate(-50%);
@@ -127,17 +144,16 @@
     		transform: translate(-50%);
 
 		}
-		}
 		.bm a{
 			width: :200px;
 			height:40px;
 			margin: 10px auto;
 			display: inline-block;
 			color: #fff;
-			font-size: 16px;
+			font-size: 12px;
 		}
 		a{
-			color:#fff;
+			color:#000;
 			font-size: 12px;
 			text-decoration: none;
 		}
@@ -146,11 +162,30 @@
 			height:20px;
 			margin: 0 auto;
 		}
+
+		.lg_item{
+			width:100%;
+			height:400px;
+			position: absolute;
+			top:50%;
+			left:0;
+			transform: translate(0,-50%);
+			background-image: url(01.jpg);
+			background-repeat: no-repeat;
+			-webkit-background-size: cover;
+    		-moz-background-size: cover;
+   			-o-background-size: cover;
+			   background-size: cover;
+			   opacity: 0.6;
+			
+		}
+	
 			
 		</style>
 	</head>
 	<body>
-		<canvas id="myCanvas"></canvas>
+		<div class="lg_item">
+		</div>
 		<div class="login_float">
 		<div class="lg">
 			<div class="lg_t">
@@ -200,137 +235,17 @@
 		});
 		</script>
 		<script type="text/javascript">
-		
-		
-		//小球对象
-			var cyclePoint = function(x,y,r,s,t){
-				this.x =x;//初始位置  ---横坐标
-				this.y=y;//初始化 纵坐标
-				this.r=r;//小球的半径;
-				this.s=s;
-				this.t=t;
-			}
-			/**
-			 *  封装参数对象
-			 * @param {Object} s
-			 * @param {Object} flag
-			 */
-			var parameter = function(s,flag){
-				this.s=s;
-				this.flag =flag;
-			}
-			
-			
-			var canvas = $("#myCanvas")[0];
-			var width =canvas.width=$("body").width();
-			var height=canvas.height=$("body").height();
-			var ctx = canvas.getContext("2d");
-			var cycleList = [];
-			//构建圆点对象
-			var RENDERER = {
-				//初始化 小球
-				init:function(b){
-					for(var i= 0;i<30;i++){
-						var x = (width-6)*Math.random();
-						var y = (height-6)*Math.random();
-						var r = 3*Math.random()+3;
-						var random1 = Math.random();
-						var random2 = Math.random();
-						var s = random1>0.5 ? 1 : -1;
-						var t = random2>0.5 ? 1 : -1;
-						cycleList.push(new cyclePoint(x,y,r,s,t));
-						ctx.beginPath();
-						ctx.fillStyle=b;
-						ctx.arc(x,y,r,0,2*Math.PI,true);
-						ctx.stroke();
-						ctx.fill();
-					}
-					this.link(cycleList);
-				},
-				//小球的运动
-				render:function(a,b){
-					ctx.clearRect(0,0,width,height);
-					for(var i= 0;i<a.length;i++){
-						//获取小球的位置
-						var c = a[i].x;
-						var d = a[i].y;
-						var r = a[i].r;
-						if(c<(r/2)||(c>(width-6))){
-							a[i].s*=-1;
-						}
-						if((d<(r/2))||d>height-6){
-							a[i].t*=-1;
-						}
-						a[i].x+=a[i].s;
-						a[i].y+=a[i].t;
-						ctx.beginPath();
-						ctx.fillStyle=b;
-						ctx.arc(a[i].x,a[i].y,a[i].r,0,2*Math.PI,true);
-						ctx.stroke();
-						ctx.fill();
-					}
-					this.link(cycleList,b);
-				},
-				//判断两个对球体对象的距离 如果距离接近就连接
-				link:function(a,b){
-					for(var i =0;i<a.length-1;i++){
-						for(var j =i+1;j<a.length;j++){
-							//计算两个球的距离
-							var x =a[i].x;
-							var y =a[j].x;
-							var o = a[i].y;
-							var p = a[j].y;
-							var width = Math.abs(x-y);
-							var height =Math.abs(o-p);
-							var sprt = Math.sqrt(width*width+height*height);
-							if(sprt<180){
-								ctx.beginPath();
-								ctx.strokeStyle=b;
-								ctx.moveTo(x,o);
-								ctx.lineTo(y,p);
-								ctx.stroke();
-							}
-						}
-					}
-				},
-				
-				run: function(parameter){//参数说明
-					RENDERER.init("#666666"); 
-			var timer = setInterval(function(){
-				RENDERER.render(cycleList,"#8d8d8d");
-				
-			},parameter.s);
-			if(parameter.flag){
-			$(function(){
-				$("body").mouseover(function(){
-				clearInterval(timer);
-			}).mouseleave(function(){
-				timer = setInterval(function(){
-				RENDERER.render(cycleList);
-				
-			},10);
-				
-			});
-			})
-			}
-				}
-			};
-			
-			//执行run方法
-			RENDERER.run({
-				"s":"10",
-				"flag":false
-				});
-			
-			/**
-			 * 监控窗口的变化
-			 */
-			/*$("body").onresize(function(){
-				width =canvas.width=$("body").width();
-				height=canvas.height=$("body").height();
-			});*/
-			
-			
+		$("body").activeLine({
+			r:2, //球体的基础大小
+			rRise:0.2,//小球浮动区间
+			time:10,//执行时间 执行频率 运动速度
+			num:20,//初始化小球数量
+			cycleColor:"#ccc",//球的颜色
+			lineColor:"#ccc", //线条的颜色
+			linkDistance:180,//两球的最大连线距离
+			lineWidth:0.5,//线条宽度
+			flag:false//鼠标移入是否暂停  true 表示 鼠标移入暂停canvas动画  鼠标移出继续运动
+		});	
 		</script>
 		<script type="text/javascript">
 		
@@ -338,8 +253,8 @@
 	 *  页面设备监控
 	 * 
 	 */
-			width =canvas.width=$("body").width();
-				height=canvas.height=$("body").height();
+			var width =$("body").width();
+				var height=$("body").height();
 		var loginw = $(".login_float").width();
 		if(width<2*loginw){
 			console.log("-----------------------");
