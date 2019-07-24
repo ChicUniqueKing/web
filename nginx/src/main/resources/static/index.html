@@ -5,9 +5,8 @@
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-ico"/>
 <meta name="keywords"/ content="canvas动画 ,jqeury插件">
 <title>ChicUniqueKing</title>
-
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-
+<script src="info.js"></script>
 <style>
 a{
 	color:#fff;
@@ -83,6 +82,19 @@ html,body {
 			<a class ="icp" href="http://www.beian.miit.gov.cn">鄂ICP备18011644号</a> | Design by chicboy -2019 仅用于个人网站 开发测试 学习使用 
 		</div>
 <script>
+
+    // 
+    var url = window.location.href;
+    console.log("-----------"+url);
+    var index = url.indexOf("=");
+    var code = url.substr(index+1);
+    console.log("======code="+code);
+
+
+
+
+
+
 var RENDERER = {
 	SNOW_COUNT: {INIT : 100, DELTA : 1},
 	BACKGROUND_COLOR : 'hsl(%h, 50%, %l%)', 
@@ -271,6 +283,8 @@ SNOW.prototype = {
 $(function(){
 	RENDERER.init();
 });
+
+
 </script>
 </body>
 </html>
