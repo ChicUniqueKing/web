@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="favicon.ico" >
+    <link rel="Shortcut Icon" href="favicon.ico" />
+
+    <title>主页</title>
+    <meta name="keywords" content="耶回收">
+    <meta name="description" content="耶回收">
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="layer.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/eruda"></script>
+</head>
+<style>
+*{margin:0;padding:0;}
+ .input-text{width:160px;height:30px;line-height:30px;border:1px solid #ddd;}
+ .input-btn{width:80px;height:30px;color:#fff;font-size:14px;background:lightblue} 
+ .msg_content{width: 800px;height:600px;margin: auto;margin-top: auto;margin-top: 100px;}
+ .msg_con{width:400px height:300px;border:1px solid #ccc;overflow: auto;}
+ .msgContent{width:400px;height:auto;}
+ .msg{
+			width:50%;
+			height:510px;
+			margin:auto;
+			border:1px solid #ddd;
+		}
+		
+		.con_s{	width:100%;
+				height:400px;
+				position: relative;
+				overflow-y: auto;
+				}
+		 .msg_s{
+		 	   width:100%;
+		 	   height:60px;
+		 	   border-top:1px solid #ddd;
+		 }
+		 
+		 .input-text{
+		 	width:512px;
+		 	height:40px;
+		 	border-radius:3px;
+		 	border:1px solid #ddd;
+		 	padding-left:10px;
+		 	margin-top:10px;
+		 	margin-left:10px;
+		 }
+		 
+		 .input-btn{
+		 	width:80px;
+		 	height:40px;
+		 	border-radius:3px;
+		 	border:1px solid #ddd;
+		 	margin-top:10px;
+		 }
+		 
+		 .con-msg{
+		 	
+		 }
+</style>
+<body>
+		<div>
+			<h3>聊天室</h3>
+		</div>
+		<div class="msg">
+			<div><input type="text" id="input_user" class="input-text"><button class="input-btn" id="toChat">进入聊天室</button></div>
+			<div class="con_s">
+				<!--
+                	作者：offline
+                	时间：2018-08-02
+                	描述：内容显示
+                -->
+				<div class="con-msg">
+					
+				</div>
+			</div>
+			<div class="msg_s"> 
+				<input class="input-text" type="text"  id="user_msg" placeholder="你想说.."/>
+				<input class="input-btn" type="button" onclick="sendMsg()" value="发送" />
+				<input class="input-btn" type="button"  value="清空消息" />
+			</div>
+		</div>
+	</body>
+
+
+
+<!-- js start -->
+ <script type="text/javascript">
+ eruda.init();
+  
+  //用户id
+  var userId;
+  
+  var  timer =null ;//全局定时器 用户检测 客户端心跳连接
+  
+  var time = 20//30毫秒 未与服务器交互时间  若超过这个时间 则向服务器发送心跳包
+  
+
+ $(function(){
+	 $("#toChat").click(function(){
+		 var username =$("#input_user").val();
+		 if(username==null||username==''){
+			 layer.msg("请您输入您的用户名");
+			 return;
+		 }
+		 //var url = "https://www.yistar.top/wx_mini/tochat"; //公网环境
+		 var url = "http://192.168.103.219:8888/tochat";
+		 $.ajax({
+			 url:url,
+			 data:{"username":username},//例如用户名。。
+			 type:"post",
+			 dataType:"json",
+			 success:function(rs){
+			 	userId = rs.id;
+				 //开启聊天
+				 WebSocketTest();
+			 }
+		 });
+	 });
+ });
+ 
+ 
+ 
+ 
+ layer.msg("请输入用户名称后开始聊天");
+ //用户进入页面 开启websocket连接
+ 
+  var ws=null;
+  function WebSocketTest()
+         {
+            if ("WebSocket" in window)//判断当前浏览器是否支持websocket
+            {
+               layer.msg("您的浏览器支持 WebSocket!");
+               
+              
+
+               // 打开一个 web socket
+               //ws_url ="wss://www.yistar.top/wx_mini/ws";
+              var  ws_url ="ws://192.168.103.219:8888/ws"
+              
+               ws = new WebSocket(ws_url);
+               
+               timer = setInterval(sendHeartPang,1000);
+                 
+               ws.onopen = function()
+               {
+               	time = 20;
+                  // Web Socket 已连接上，使用 send() 方法发送数据
+                  //ws.send("发送数据");
+                  layer.msg("正在连接服务器");
+                  //定时检测用户连接
+               };
+                
+               ws.onmessage = function (evt) 
+               { 
+                  var received_msg = JSON.parse(evt.data);
+                  var msgType = received_msg.msgType;
+                  if(msgType=="0001"||msgType=="0002"){//服务器系统消息
+                  	 layer.msg(received_msg.messageText);
+                  }else if(msgType=="0004"){
+                  	//接受普通文本消息
+                  $(".con-msg").append('<p style="height:30px;color:orangered;text-align: right;"> '+received_msg.userName+':'+received_msg.messageText+'</p>')
+                  		$(".con_s").scrollTop($(".con_s")[0].scrollHeight);
+                  }else if(msgType=="0003"){//用户列表
+                  		
+                  }else{//心跳消息 获取到服务的消息说明  我还活着
+                  	
+                  	layer.msg("我知道 你还活着");
+                  	//重置监听事件间隔
+                  	time =20;
+                  	
+                  	
+                  }
+      
+               };
+              
+               ws:onerror= function(){
+               	
+               	  //连接错误   可能由于网络原因 断开和服务器的连接  再次尝试连接
+               	  //layer.msg("当前网络故障 正在重新连接...");
+               	  // ws = new WebSocket(ws_url);
+               	  timer =null;
+               }
+                
+               ws.onclose = function()
+               { 
+                  // 关闭 websocket
+                  layer.msg("连接已关闭..."); 
+               };
+          
+            }
+  
+            else
+            {
+               // 浏览器不支持 WebSocket
+               layer.msg("您的浏览器不支持 WebSocket!"); 
+            }
+         }
+ 
+ function sendMsg(){
+ 	layer.msg("=========发送消息中 ");
+	 var content =$("#user_msg").val();
+	 //
+	 var userName = $(".input-text").val();
+	 var msg ={"fromId":userId,"messageText":content,"userName":userName};
+	 var s = JSON.stringify(msg);
+	 layer.msg(s);
+	 $(".con-msg").append('<p style="height:30px"> '+userName+':'+msg.messageText+'</p>');
+	 $(".con_s").scrollTop($(".con_s")[0].scrollHeight);
+	 ws.send(s);
+	 
+ };
+ 
+ function sendHeartPang(){
+ 	var userName = $(".input-text").val();
+ 	//让时间倒计时
+  	time--;
+  	layer.msg("超时时间:"+time);
+  	if(time<1){
+  		//间隔时间到了  则发送心跳信息 保证和服务器的连接
+  		layer.msg("长时间没有和服务器互动  服务器为了知道你还活着 发送心跳包");
+  	var  f ={"fromId":userId,"messageText":"0","userName":userName,"msgType":"0005"};
+  	time =20;
+  	 ws.send(JSON.stringify(f));
+  
+  	}
+ 	
+ }
+ 
+ 
+ </script>
+</body>
+</html>
