@@ -1,291 +1,115 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<link rel="shortcut icon" href="./favicon.ico" type="image/x-ico"/>
-<meta name="keywords"/ content="canvas动画 ,jqeury插件">
-<title>ChicUniqueKing</title>
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="info.js"></script>
-<style>
-a{
-	color:#fff;
-}
-html,body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-.container{
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-.bm{
-			width:475px;
-			height:60px;
-			position: absolute;
-			font-size: 12px;
-			margin: 0 auto;
-			bottom: 10px;
-			color:#fff;
-    		left: 545px;
-
-		}
-		}
-		.bm a{
-			width: :200px;
-			height:40px;
-			margin: 10px auto;
-			display: inline-block;
-			color: #fff;
-			font-size: 16px;
-		}
-		
-		.login{
-			width:400px;
-			height:300px;
-			border:1px solid #fff;
-			opacity: 0.8;
-			position: absolute;
-			top:300px;
-			left:20px;
-		}
-		
-		.input-text{
-			width:300px;
-			border:1px solid #fff;
-			height:40px;
-			padding-left:15px;
-			opacity: 0.6;
-		}
-		#water{
-			width:50%;
-			height:30px;
-			position: absolute;
-			font-size: 16px;
-			color:#fff;
-			top:5%;
-			left:10%;
-		}
-		
-</style>
-</head>
-<body>
-
-<div id="jsi-snow-container" class="container"></div>
-<div id ="water"><a href="water.html">水滴特效</a> | <a href="line.html">line</a>this index.html page is deployed for nginx by jenkins---</div>
-<div class="bm">
-			<a class ="icp" href="http://www.beian.miit.gov.cn">鄂ICP备18011644号</a> | Design by chicboy -2019 仅用于个人网站 开发测试 学习使用 
+	<head>
+		<meta charset="UTF-8">
+		<title>my blog info index</title>
+		<meta name="keywords" content="blog" />
+		<meta name="description" content="个人博客" />
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	</head>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="info.js"></script>
+	<link rel="stylesheet" href="info.css" />
+	<body>
+		<div class ="warper_nav">
+			<!-- nav start-->
+			<ul>
+				<li><a >netlogo</a></li>
+				<li><a href="http://blog.yistar.top">首页</a></li>
+				<li><a href="info.html">博客</a></li>
+				<li><a href="http://file.yistar.top/">下载</a></li>
+				<li><a href="group_chat.html">论坛</a></li>
+				<li><a href="Leaving_message.html">留言</a></li>
+			</ul>
+			<!-- nav end-->
+			<div class="operate_info">
+				<ul>
+					<li><input class="blog_search" type="text"  placeholder="search.."/></li>
+					<li><a href="writeblog.html">写博客</a></li>
+					<li id="userInfo"><a href="line.html">登录</a></li>
+				</ul>
+				
+			</div>
 		</div>
-<script>
-
-    // 
-    var url = window.location.href;
-    console.log("-----------"+url);
-    var index = url.indexOf("=");
-    var code = url.substr(index+1);
-    console.log("======code="+code);
-
-
-
-
-
-
-var RENDERER = {
-	SNOW_COUNT: {INIT : 100, DELTA : 1},
-	BACKGROUND_COLOR : 'hsl(%h, 50%, %l%)', 
-	INIT_HUE : 180,
-	DELTA_HUE : 0.1,
-	
-	init : function(){
-		this.setParameters();
-		this.reconstructMethod();
-		this.createSnow(this.SNOW_COUNT.INIT * this.countRate, true);
-		this.render();
-	},
-	setParameters : function(){
-		this.$window = $(window);
-		
-		this.$container = $('#jsi-snow-container');
-		this.width = this.$container.width();
-		this.height = this.$container.height();
-		this.center = {x : this.width / 2, y : this.height / 2};
-		this.countRate =  this.width * this.height / 500 / 500;
-		this.canvas = $('<canvas />').attr({width : this.width, height : this.height}).appendTo(this.$container).get(0);
-		this.context = this.canvas.getContext('2d');
-		
-		this.radius = Math.sqrt(this.center.x * this.center.x + this.center.y * this.center.y);
-		this.hue = this.INIT_HUE;
-		this.snows = [];
-	},
-	reconstructMethod : function(){
-		this.render = this.render.bind(this);
-	},
-	createSnow : function(count, toRandomize){
-		for(var i = 0; i < count; i++){
-			this.snows.push(new SNOW(this.width, this.height, this.center, toRandomize));
-		}
-	},
-	render : function(){
-		requestAnimationFrame(this.render);
-		
-		var gradient = this.context.createRadialGradient(this.center.x, this.center.y, 0, this.center.x, this.center.y, this.radius),
-			backgroundColor = this.BACKGROUND_COLOR.replace('%h', this.hue);
-		
-		gradient.addColorStop(0, backgroundColor.replace('%l', 30));
-		gradient.addColorStop(0.2, backgroundColor.replace('%l', 20));
-		gradient.addColorStop(1, backgroundColor.replace('%l', 5));
-		
-		this.context.fillStyle = gradient;
-		this.context.fillRect(0, 0, this.width, this.height);
-		
-		for(var i = this.snows.length - 1; i >= 0; i--){
-			if(!this.snows[i].render(this.context)){
-				this.snows.splice(i, 1);
-			}
-		}
-		this.hue += this.DELTA_HUE;
-		this.hue %= 360;
-		
-		this.createSnow(this.SNOW_COUNT.DELTA, false);
-	}
-};
-var SNOW = function(width, height, center, toRandomize){
-	this.width = width;
-	this.height = height;
-	this.center = center;
-	this.init(toRandomize);
-};
-SNOW.prototype = {
-	RADIUS : 20,
-	OFFSET : 4,
-	INIT_POSITION_MARGIN : 20,
-	COLOR : 'rgba(255, 255, 255, 0.8)',
-	TOP_RADIUS : {MIN : 1, MAX : 3},
-	SCALE : {INIT : 0.04, DELTA : 0.01},
-	DELTA_ROTATE : {MIN : -Math.PI / 180 / 2, MAX : Math.PI / 180 / 2},
-	THRESHOLD_TRANSPARENCY : 0.7,
-	VELOCITY : {MIN : -1, MAX : 1},
-	LINE_WIDTH : 2,
-	BLUR : 10,
-	
-	init : function(toRandomize){
-		this.setParameters(toRandomize);
-		this.createSnow();
-	},
-	setParameters : function(toRandomize){
-		if(!this.canvas){
-			this.radius = this.RADIUS + this.TOP_RADIUS.MAX * 2 + this.LINE_WIDTH;
-			this.length = this.radius * 2;
-			this.canvas = $('<canvas />').attr({width : this.length, height : this.length}).get(0);
-			this.context = this.canvas.getContext('2d');
-		}
-		this.topRadius = this.getRandomValue(this.TOP_RADIUS);
-		
-		var theta = Math.PI * 2 * Math.random();
-		
-		this.x = this.center.x + this.INIT_POSITION_MARGIN * Math.cos(theta);
-		this.y = this.center.y + this.INIT_POSITION_MARGIN * Math.sin(theta);
-		this.vx = this.getRandomValue(this.VELOCITY);
-		this.vy = this.getRandomValue(this.VELOCITY);
-		
-		this.deltaRotate = this.getRandomValue(this.DELTA_ROTATE);
-		this.scale = this.SCALE.INIT;
-		this.deltaScale = 1 + this.SCALE.DELTA * 500 / Math.max(this.width, this.height);
-		this.rotate = 0;
-		
-		if(toRandomize){
-			for(var i = 0, count = Math.random() * 1000; i < count; i++){
-				this.x += this.vx;
-		 		this.y += this.vy;
-		 		this.scale *= this.deltaScale;
-		 		this.rotate += this.deltaRotate;
-			}
-		}
-	},
-	getRandomValue : function(range){
-		return range.MIN + (range.MAX - range.MIN) * Math.random();
-	},
-	createSnow : function(){
-		this.context.clearRect(0, 0, this.length, this.length);
-		
-		this.context.save();
-		this.context.beginPath();
-		this.context.translate(this.radius, this.radius);
-		this.context.strokeStyle = this.COLOR;
-		this.context.lineWidth = this.LINE_WIDTH;
-		this.context.shadowColor = this.COLOR;
-		this.context.shadowBlur = this.BLUR;
-		
-		var angle60 = Math.PI / 180 * 60,
-			sin60 = Math.sin(angle60),
-			cos60 = Math.cos(angle60),
-			threshold = Math.random() * this.RADIUS / this.OFFSET | 0,
-			rate = 0.5 + Math.random() * 0.5,
-			offsetY = this.OFFSET * Math.random() * 2,
-			offsetCount = this.RADIUS / this.OFFSET;
-		
-		for(var i = 0; i < 6; i++){
-			this.context.save();
-			this.context.rotate(angle60 * i);
-			
-			for(var j = 0; j <= threshold; j++){
-				var y = -this.OFFSET * j;
+		<!--轮播图部分-->
+		<div class="warp">
+			<ul>
+				<li style="background: #ccc;"><img src="01.jpg"/></li>
+				<li style="background: #666666;"><image src="02.jpg"/></li>
+				<li style="background: #666666;"><image src="03.jpg"/></li>
+				<li style="background: #666666;"><image src="04.jpg"/></li>
+				<li style="background: #666666;"><image src=""/></li>
+			</ul>
+		</div>
+		<!--博客主页正文-->
+		<div class="center_content">
+			<div class="con_l"></div>
+			<div class="con_c"></div>
+			<div class="con_r"></div>
+		</div>
+		<!--博客底部信息 备案信息等 友情链接-->
+		<div class="bottom_content">
+			<div style="width:100%;height:400px;">
 				
-				this.context.moveTo(0, y);
-				this.context.lineTo(y * sin60, y * cos60);
-			}
-			for(var j = threshold; j < offsetCount; j++){
-				var y = -this.OFFSET * j,
-					x = j * (offsetCount - j + 1) * rate;
-				
-				this.context.moveTo(x, y - offsetY);
-				this.context.lineTo(0, y);
-				this.context.lineTo(-x, y - offsetY);
-			}
-			this.context.moveTo(0, 0);
-			this.context.lineTo(0, -this.RADIUS);
-			this.context.arc(0, -this.RADIUS - this.topRadius, this.topRadius, Math.PI / 2, Math.PI * 2.5, false);
-			this.context.restore();
-		}
-		this.context.stroke();
-		this.context.restore();
-	},
-	render : function(context){
-		context.save();
+			</div>
+			<div style="width:300px;height:80px;margin:auto;">
+				<a class ="icp" href="http://www.beian.miit.gov.cn">鄂ICP备18011644号</a> | Design by chicboy -2019 仅用于个人网站 开发测试 学习使用 
+			</div>
+		</div>
 		
-		if(this.scale > this.THRESHOLD_TRANSPARENCY){
-			context.globalAlpha = Math.max(0, (1 - this.scale) / (1 - this.THRESHOLD_TRANSPARENCY));
+		<div class="chat">
+			<div class="c chat_c"><a href="chat.html">聊天</a></div>
+			<div class="c nav_top">
+					<div class="div cac">回到顶部</div>
+			</div>
 			
-			if(this.scale > 1 || this.x < -this.radius || this.x > this.width + this.radius || this.y < -this.radius || this.y > this.height + this.radius){
-				context.restore();
-				return false;
+		</div>
+		<script type="text/javascript">
+		var userNickName = "";
+		$(function(){
+			$(".nav_top").mouseover(function(){
+				$(this).find("div").eq(1).removeClass("cac").siblings().addClass("cac");
+			}).mouseleave(function(){
+				$(this).find("div").eq(0).removeClass("cac").siblings().addClass("cac");
+			});
+		});
+		var url = window.location.href;
+		var index = url.indexOf("=")+1;
+		if(index!=-1){
+			var lastIndex = url.indexOf("&");
+			if(lastIndex!=-1){
+				var access_token = url.substring(index,lastIndex);
+				console.log("------access_token:"+access_token);
+				$.ajax({
+					url:"https://www.yistar.top/wx_mini/getUserInfo",
+					data:{
+						"access_token":access_token
+					},
+					type:"get",
+					success:function(res){
+						console.log("获取用户信息");
+						userNickName = res.data.nickName;
+						
+					},
+					error:function(){
+						
+					}
+					
+				});
 			}
 		}
-		context.translate(this.x, this.y);
-		context.rotate(this.rotate);
-		context.scale(this.scale, this.scale);
-		context.drawImage(this.canvas, -this.radius, -this.radius);
-		context.restore();
+		if(userNickName!=null){
+			$("#userInfo").find("a").attr("href","javascript:");
+			$("#userInfo").find("a").html(userNickName);
+				// $("#userInfo").append('<a href="javascript:">'+userNickName+'</a>');
+		}
 		
- 		this.x += this.vx;
- 		this.y += this.vy;
- 		this.scale *= this.deltaScale;
- 		this.rotate += this.deltaRotate;
- 		return true;
-	}
-};
-
-$(function(){
-	RENDERER.init();
-});
-
-
-</script>
-</body>
+		
+		
+	
+		
+		</script>
+		
+	</body>
+	
 </html>
-
