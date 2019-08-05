@@ -65,7 +65,7 @@
 			
 		</div>
 		<script type="text/javascript">
-		var userNickName = "";
+		var userNickName;
 		$(function(){
 			$(".nav_top").mouseover(function(){
 				$(this).find("div").eq(1).removeClass("cac").siblings().addClass("cac");
@@ -87,10 +87,13 @@
 					},
 					type:"get",
 					success:function(res){
-						console.log("获取用户信息");
 						userNickName = res.data.nickname;
-						console.info("--------用户名="+res.data.nickname);
 						console.info("--------用户名="+userNickName);
+						if(userNickName){
+						$("#userInfo").find("a").attr("href","javascript:");
+						$("#userInfo").find("a").html(userNickName);
+				// $("#userInfo").append('<a href="javascript:">'+userNickName+'</a>');
+		}
 						
 					},
 					error:function(){
@@ -100,11 +103,7 @@
 				});
 			}
 		}
-		if(userNickName){
-			$("#userInfo").find("a").attr("href","javascript:");
-			$("#userInfo").find("a").html(userNickName);
-				// $("#userInfo").append('<a href="javascript:">'+userNickName+'</a>');
-		}
+		
 		
 		
 		
