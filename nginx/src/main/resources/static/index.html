@@ -89,6 +89,8 @@
 					success:function(res){
 						console.log("获取用户信息");
 						userNickName = res.data.nickname;
+						console.info("--------用户名="+res.data.nickname);
+						console.info("--------用户名="+userNickName);
 						
 					},
 					error:function(){
