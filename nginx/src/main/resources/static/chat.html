@@ -108,8 +108,8 @@
 			 layer.msg("请您输入您的用户名");
 			 return;
 		 }
-		 //var url = "https://www.yistar.top/wx_mini/tochat"; //公网环境
-		 var url = "http://192.168.103.219:8888/tochat";
+		 var url = "https://www.yistar.top/wx_mini/tochat"; //公网环境
+		 //var url = "http://192.168.103.219:8888/tochat";
 		 $.ajax({
 			 url:url,
 			 data:{"username":username},//例如用户名。。
@@ -140,8 +140,8 @@
               
 
                // 打开一个 web socket
-               //ws_url ="wss://www.yistar.top/wx_mini/ws";
-              var  ws_url ="ws://192.168.103.219:8888/ws"
+               ws_url ="wss://www.yistar.top/wx_mini/ws";
+             // var  ws_url ="ws://192.168.103.219:8888/ws"
               
                ws = new WebSocket(ws_url);
                
