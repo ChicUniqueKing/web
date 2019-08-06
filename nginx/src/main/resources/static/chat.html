@@ -123,26 +123,18 @@
 		 });
 	 });
  });
- 
- 
- 
- 
  layer.msg("请输入用户名称后开始聊天");
  //用户进入页面 开启websocket连接
- 
   var ws=null;
   function WebSocketTest()
          {
             if ("WebSocket" in window)//判断当前浏览器是否支持websocket
             {
                layer.msg("您的浏览器支持 WebSocket!");
-               
-              
-
                // 打开一个 web socket
                ws_url ="wss://www.yistar.top/wx_mini/ws?userId="+userId;
              // var  ws_url ="ws://192.168.103.219:8888/ws"
-              
+            
                ws = new WebSocket(ws_url);
                
                timer = setInterval(sendHeartPang,1000);
