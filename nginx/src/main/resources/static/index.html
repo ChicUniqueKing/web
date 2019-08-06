@@ -15,7 +15,7 @@
 			<!-- nav start-->
 			<ul>
 				<li><a >netlogo</a></li>
-				<li><a href="https://www.yistar.top">首页</a></li>
+				<li><a href="https://www.yistar.top?access_token=">首页</a></li>
 				<li><a href="info.html">博客</a></li>
 				<li><a href="http://file.yistar.top/">下载</a></li>
 				<li><a href="group_chat.html">论坛</a></li>
@@ -50,6 +50,14 @@
 		<!--博客底部信息 备案信息等 友情链接-->
 		<div class="bottom_content">
 			<div style="width:100%;height:400px;">
+				<ul>
+					<li><a href="">Spring官网</a></li>
+					<li><a href="">docker</a></li>
+					<li><a href=""></a></li>
+					<li><a href=""></a></li>
+					<li><a href=""></a></li>
+					<li><a href=""></a></li>
+				</ul>
 				
 			</div>
 			<div style="width:300px;height:80px;margin:auto;">
@@ -91,7 +99,7 @@
 						console.info("--------用户名="+userNickName);
 						if(userNickName){
 						$("#userInfo").find("a").attr("href","javascript:");
-						$("#userInfo").find("a").html(userNickName);
+						$("#userInfo").find("a").html('<span style="display:inline-block;width:40px;height:40px;border-raduis:50%;"><image src ="'+res.figureurl_qq_1+'"/></span><span>'+userNickName+'</span>');
 				// $("#userInfo").append('<a href="javascript:">'+userNickName+'</a>');
 		}
 						
