@@ -202,7 +202,7 @@
 			<p><label></label><input class="input-text" type="text" placeholder="输入手机号"/></p>
 			<p><label></label><input class="input-text" type="text" placeholder="输入验证码"/></p>
 			<p><label></label><input class="input-text" style="width:120px" type="text" placeholder="输入短信验证码"/><a href="sendMsg">发送验证码</a></p>
-			<p style="margin-left:30px;"><a href="/touchme">有疑问？</a><a href="/wxlogin">微信登录</a>|<a href="javascript:;" id="qqlg">qq登录</a><input class="btn" type="button" value="登录"/></p>
+			<p style="margin-left:30px;"><a href="/touchme">有疑问？</a><a href="javascript:" id="wxlog">微信登录</a>|<a href="javascript:;" id="qqlg">qq登录</a><input class="btn" type="button" value="登录"/></p>
 		</div>
 		</div>
 		</div>
@@ -311,6 +311,25 @@
 			$("#qqlg").click(function(){
 				window.location.href="https://graph.qq.com/oauth2.0/authorize?client_id=101684736&response_type=token&scope=all&redirect_uri=https://www.yistar.top/callback";
 			});
+			
+			$("#wxlog").click(function(){
+				window.location.href="https://graph.qq.com/oauth2.0/authorize?client_id=101684736&response_type=token&scope=all&redirect_uri=https://www.yistar.top/callback";
+			});
+			
+			
+		</script>
+		<script type="text/javascript" src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+		<script type="text/javascript">
+			 var obj = new WxLogin({
+ 				self_redirect:true,
+ 				id:"login_container", 
+ 				appid: "", 
+ 				scope: "all", 
+ 				redirect_uri: "https://www.yistar.top/",
+  				state: "",
+ 				style: "",
+ 				href: ""
+ });
 			
 			
 		</script>

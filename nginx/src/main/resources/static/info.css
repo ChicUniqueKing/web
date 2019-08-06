@@ -155,7 +155,8 @@ a,html,body{
 	height:40px;
 }
 
-#userInfo {
+#userInfo a {
 	font-size:12px;
 }
+
 
