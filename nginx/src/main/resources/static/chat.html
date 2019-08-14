@@ -10,21 +10,22 @@
     <link rel="Shortcut Icon" href="favicon.ico" />
 
     <title>主页</title>
-    <meta name="keywords" content="耶回收">
-    <meta name="description" content="耶回收">
+    <meta name="keywords" content="chic">
+    <meta name="description" content="chic">
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="layer.js"></script>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/eruda"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/eruda"></script>
+	<link rel="stylesheet" href="layer.css" />
 </head>
 <style>
 *{margin:0;padding:0;}
  .input-text{width:160px;height:30px;line-height:30px;border:1px solid #ddd;}
  .input-btn{width:80px;height:30px;color:#fff;font-size:14px;background:lightblue} 
  .msg_content{width: 800px;height:600px;margin: auto;margin-top: auto;margin-top: 100px;}
- .msg_con{width:400px height:300px;border:1px solid #ccc;overflow: auto;}
+ .msg_con{width:400px height:300px;border:1px solid #ccc;overflow:auto;}
  .msgContent{width:400px;height:auto;}
  .msg{
-			width:50%;
+			width:100%;
 			height:510px;
 			margin:auto;
 			border:1px solid #ddd;
@@ -62,10 +63,14 @@
 		 .con-msg{
 		 	
 		 }
+
+		 body{
+			 width:895px;
+			 height:600px;
+		 }
 </style>
 <body>
 		<div>
-			<h3>聊天室</h3>
 		</div>
 		<div class="msg">
 			<div><input type="text" id="input_user" class="input-text"><button class="input-btn" id="toChat">进入聊天室</button></div>
@@ -82,7 +87,7 @@
 			<div class="msg_s"> 
 				<input class="input-text" type="text"  id="user_msg" placeholder="你想说.."/>
 				<input class="input-btn" type="button" onclick="sendMsg()" value="发送" />
-				<input class="input-btn" type="button"  value="清空消息" />
+				<input class="input-btn" type="button" id = "clearHisMsg"  value="清空消息" />
 			</div>
 		</div>
 	</body>
@@ -91,7 +96,7 @@
 
 <!-- js start -->
  <script type="text/javascript">
- eruda.init();
+//  eruda.init();
   
   //用户id
   var userId;
@@ -122,6 +127,13 @@
 			 }
 		 });
 	 });
+	  /**
+    清空消息函数
+ */
+ $("#clearHisMsg").click(function(){
+		$(".con-msg").html("");
+ });
+
  });
  layer.msg("请输入用户名称后开始聊天");
  //用户进入页面 开启websocket连接
@@ -156,13 +168,13 @@
                   	 layer.msg(received_msg.messageText);
                   }else if(msgType=="0004"){
                   	//接受普通文本消息
-                  $(".con-msg").append('<p style="height:30px;color:orangered;text-align: right;"> '+received_msg.userName+':'+received_msg.messageText+'</p>')
+                  $(".con-msg").append('<p style="height:30px;color:orangered;text-align: right;margin-right:15px;"> '+received_msg.userName+':'+received_msg.messageText+'</p>')
                   		$(".con_s").scrollTop($(".con_s")[0].scrollHeight);
                   }else if(msgType=="0003"){//用户列表
                   		
                   }else{//心跳消息 获取到服务的消息说明  我还活着
                   	
-                  	layer.msg("我知道 你还活着");
+//                	layer.msg("我知道 你还活着");
                   	//重置监听事件间隔
                   	time =20;
                   	
@@ -195,16 +207,22 @@
          }
  
  function sendMsg(){
- 	layer.msg("=========发送消息中 ");
 	 var content =$("#user_msg").val();
+	 $("#user_msg").val("");
+	 if(content==""){
+		 layer.msg("不能发送空消息");
+		 return;
+	 }
 	 //
 	 var userName = $(".input-text").val();
-	 var msg ={"fromId":userId,"messageText":content,"userName":userName};
+	 var msg ={"fromId":userId,"messageText":content,"userName":userName,"msgType":"0004"};
 	 var s = JSON.stringify(msg);
-	 layer.msg(s);
-	 $(".con-msg").append('<p style="height:30px"> '+userName+':'+msg.messageText+'</p>');
+//	 layer.msg(s);
+	 $(".con-msg").append('<p style="height:30px;margin-left:15px;"> '+userName+':'+msg.messageText+'</p>');
 	 $(".con_s").scrollTop($(".con_s")[0].scrollHeight);
+	 layer.msg("消息发送中...");
 	 ws.send(s);
+	 time=20;
 	 
  };
  
@@ -212,10 +230,10 @@
  	var userName = $(".input-text").val();
  	//让时间倒计时
   	time--;
-  	layer.msg("超时时间:"+time);
+//	layer.msg("超时时间:"+time);
   	if(time<1){
   		//间隔时间到了  则发送心跳信息 保证和服务器的连接
-  		layer.msg("长时间没有和服务器互动  服务器为了知道你还活着 发送心跳包");
+//		layer.msg("长时间没有和服务器互动  服务器为了知道你还活着 发送心跳包");
   	var  f ={"fromId":userId,"messageText":"0","userName":userName,"msgType":"0005"};
   	time =20;
   	 ws.send(JSON.stringify(f));
@@ -223,6 +241,19 @@
   	}
  	
  }
+ 
+
+  //键盘监控时间
+   $(window).keydown(function(e){
+	   //判断系统输入法
+			if(e.keyCode=="13"){
+				sendMsg();
+			}
+			
+   });
+
+
+
  
  
  </script>

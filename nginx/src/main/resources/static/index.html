@@ -9,7 +9,9 @@
 	</head>
 	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="info.js"></script>
+	<script src="layer.js"></script>
 	<link rel="stylesheet" href="info.css" />
+	<link rel="stylesheet" href="layer.css" />
 	<body>
 		<div class ="warper_nav">
 			<!-- nav start-->
@@ -66,7 +68,7 @@
 		</div>
 		
 		<div class="chat">
-			<div class="c chat_c"><a href="chat.html">聊天</a></div>
+			<div class="c chat_c"><a href="javascript:tochat()">聊天</a></div>
 			<div class="c nav_top">
 					<div class="div cac">回到顶部</div>
 			</div>
@@ -99,7 +101,7 @@
 						console.info("--------用户名="+userNickName);
 						if(userNickName){
 						$("#userInfo").find("a").attr("href","javascript:");
-						$("#userInfo").find("a").html('<span style="display:inline-block;width:30px;height:30px;border-raduis:50%;"><image class="user-img" src ="'+res.data.img_url+'"/></span><span>'+userNickName+'</span>');
+						$("#userInfo").find("a").html('<span style="display:inline-block;width:30px;height:30px;border-radius:50%;"><image class="user-img" src ="'+res.data.img_url+'"/></span><span>'+userNickName+'</span>');
 				// $("#userInfo").append('<a href="javascript:">'+userNickName+'</a>');
 		}
 						
@@ -110,6 +112,22 @@
 					
 				});
 			}
+		}
+
+		function tochat(){
+			layer.msg("-----------进入聊天------------");
+			var index = layer.open({
+  				type: 2 //Page层类型
+				  ,skin:'layui-layer-molv'
+  				,area: ['893px', '600px']
+  				,title: '聊天室'
+				,shadeClose:true
+  				,shade: 0.7 //遮罩透明度
+ 				 ,maxmin: true //允许全屏最小化
+  				,anim: 1 //0-6的动画形式，-1不开启
+  				,content: ['chat.html','no']
+});  
+
 		}
 		
 		
