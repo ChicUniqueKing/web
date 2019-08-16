@@ -9,14 +9,16 @@
 	</head>
 	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="info.js"></script>
+	<script src="fullpage.js"></script>
 	<script src="layer.js"></script>
 	<link rel="stylesheet" href="info.css" />
 	<link rel="stylesheet" href="layer.css" />
+	<link rel="stylesheet" href="fullpage.css" />
 	<body>
-		<div class ="warper_nav">
+			<div class ="warper_nav active_r">
 			<!-- nav start-->
 			<ul>
-				<li><a >netlogo</a></li>
+				<li><img width="40px" height="40px" src="logo.png"></li>
 				<li><a href="https://www.yistar.top?access_token=">首页</a></li>
 				<li><a href="info.html">博客</a></li>
 				<li><a href="http://file.yistar.top/">下载</a></li>
@@ -33,25 +35,26 @@
 				
 			</div>
 		</div>
+	<div id="fullpage">
 		<!--轮播图部分-->
-		<div class="warp">
-			<ul>
-				<li style="background: #ccc;"><img src="01.jpg"/></li>
-				<li style="background: #666666;"><image src="02.jpg"/></li>
-				<li style="background: #666666;"><image src="03.jpg"/></li>
-				<li style="background: #666666;"><image src="04.jpg"/></li>
-				<li style="background: #666666;"><image src=""/></li>
-			</ul>
+		<div id="section0" class="section">
+				<div id ="slide1" class="slide ">第一幅</div>
+				<div id ="slide2" class="slide ">大师傅</div>
+				<div id ="slide3" class="slide ">阿斯顿发</div>
+				<div id ="slide4" class="slide ">阿斯顿发</div>
 		</div>
 		<!--博客主页正文-->
-		<div class="center_content">
+		<div id="section1"  class="center_content section fp-section">
 			<div class="con_l"></div>
 			<div class="con_c"></div>
 			<div class="con_r"></div>
 		</div>
+		<div id="section2" class="section">
+			
+		</div>
 		<!--博客底部信息 备案信息等 友情链接-->
-		<div class="bottom_content">
-			<div style="width:100%;height:400px;">
+		<div id="section3" class="bottom_content section fp-section">
+			<div class="link_content">
 				<ul>
 					<li><a href="">Spring官网</a></li>
 					<li><a href="">docker</a></li>
@@ -62,19 +65,15 @@
 				</ul>
 				
 			</div>
-			<div style="width:300px;height:80px;margin:auto;">
+			<div class="web-info">
 				<a class ="icp" href="http://www.beian.miit.gov.cn">鄂ICP备18011644号</a> | Design by chicboy -2019 仅用于个人网站 开发测试 学习使用 
 			</div>
 		</div>
-		
-		<div class="chat">
-			<div class="c chat_c"><a href="javascript:tochat()">聊天</a></div>
-			<div class="c nav_top">
-					<div class="div cac">回到顶部</div>
-			</div>
-			
-		</div>
 		<script type="text/javascript">
+		 var myFullpage = new fullpage('#fullpage', {
+        verticalCentered: false
+    });
+		
 		var userNickName;
 		$(function(){
 			$(".nav_top").mouseover(function(){
@@ -136,7 +135,14 @@
 	
 		
 		</script>
-		
+		</div>
+		<div class="chat">
+			<div class="c chat_c"><a href="javascript:tochat()">聊天</a></div>
+			<div class="c nav_top">
+					<div class="div cac">回到顶部</div>
+			</div>
+			
+		</div>
 	</body>
 	
 </html>

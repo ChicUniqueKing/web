@@ -63,18 +63,18 @@
 })(jQuery);
 
 $(function(){
-	$(".warp").wheelPlanting();
-	$(window).scroll(function(){
-		var h = $(".warper_nav").height();
-		var distance = $(window).scrollTop();
-		if(distance>h){
-			$(".warper_nav").addClass("active");
-		}else{
-			$(".warper_nav").removeClass("active");
-		}
-		
-		
-	});
+	//$(".warp").wheelPlanting();
+//	$(window).scroll(function(){
+//		var h = $(".warper_nav").height();
+//		var distance = $(window).scrollTop();
+//		if(distance>h){
+//			$(".warper_nav").addClass("active");
+//		}else{
+//			$(".warper_nav").removeClass("active");
+//		}
+//		
+//		
+//	});
 	
 });
 
